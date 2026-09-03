@@ -11,12 +11,12 @@
 
 ## v0.2.0 — Document Styling
 
-- [ ] estilos configuráveis;
-- [ ] metadados do documento;
+- [x] estilos configuráveis;
+- [x] metadados do documento;
 - [ ] tabelas Markdown;
 - [ ] melhor tratamento de código;
 - [ ] cabeçalho e rodapé;
-- [ ] configuração por arquivo YAML.
+- [x] configuração por arquivo YAML.
 
 ## v0.3.0 — Templates
 

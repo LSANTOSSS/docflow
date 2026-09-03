@@ -1,0 +1,15 @@
+document:
+  title: "DocFlow Example"
+  author: "Lucas da Silva Santos"
+  subject: "Document automation example"
+  keywords: "docflow, markdown, docx"
+
+styles:
+  body:
+    font: "Arial"
+    size: 11
+  heading:
+    font: "Arial"
+  code:
+    font: "Courier New"
+    size: 9

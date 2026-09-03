@@ -6,9 +6,9 @@ O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos
 
 Este projeto complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF): enquanto o SAF demonstra análise e Engenharia de Requisitos, o DocFlow demonstra **automação, desenvolvimento, testes e tooling**.
 
-## Objetivo da v0.1.0
+## Estado atual
 
-A primeira versão entrega um fluxo mínimo, mas funcional:
+A v0.1.0 estabeleceu o fluxo funcional de Markdown até DOCX. A v0.2.0 está em desenvolvimento e adiciona configuração documental sem quebrar o uso básico da versão anterior.
 
 ```text
 Markdown
@@ -17,21 +17,25 @@ Validação
    ↓
 Parser estrutural
    ↓
+Configuração YAML (opcional)
+   ↓
 Exportador DOCX
    ↓
 Documento gerado
 ```
 
-### Suporte inicial
+### Suporte atual
 
 - títulos Markdown (`#` a `######`);
 - parágrafos;
-- listas não ordenadas;
-- listas ordenadas;
+- listas não ordenadas e ordenadas;
 - blocos de código cercados por ```;
 - validação de arquivo de entrada;
-- saída `.docx` configurável;
 - CLI `docflow export`;
+- configuração YAML opcional;
+- metadados DOCX (`title`, `author`, `subject`, `keywords`);
+- fonte e tamanho do corpo configuráveis;
+- fonte de títulos e de código configurável;
 - testes automatizados.
 
 ## Instalação local
@@ -46,40 +50,24 @@ pip install -e .[dev]
 
 ## Uso
 
+Compatível com a v0.1.0:
+
 ```bash
 docflow export examples/sample.md -o output/sample.docx
 ```
 
-Ou:
+Com configuração:
 
 ```bash
-python -m docflow.cli export examples/sample.md -o output/sample.docx
+docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
 ```
+
+Consulte `examples/docflow.yaml` para um exemplo de metadados e estilos.
 
 ## Testes
 
 ```bash
 pytest
-```
-
-## Estrutura
-
-```text
-docflow/
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── ROADMAP.md
-├── AGENTS.md
-├── pyproject.toml
-├── src/
-│   └── docflow/
-│       ├── cli.py
-│       ├── parser.py
-│       └── exporters/
-│           └── docx.py
-├── tests/
-└── examples/
 ```
 
 ## Segurança e origem
@@ -88,7 +76,7 @@ O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não 
 
 ## Roadmap
 
-A evolução prevista inclui estilos configuráveis, metadados, tabelas, imagens, templates DOCX, PDF, validações adicionais e pipeline de publicação.
+A v0.2.0 continuará com tabelas Markdown, melhor tratamento de código e cabeçalho/rodapé.
 
 Consulte [`ROADMAP.md`](ROADMAP.md).
 
