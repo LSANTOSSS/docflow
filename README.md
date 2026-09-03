@@ -6,9 +6,9 @@ O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos
 
 Este projeto complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF): enquanto o SAF demonstra análise e Engenharia de Requisitos, o DocFlow demonstra **automação, desenvolvimento, testes e tooling**.
 
-## Estado atual
+## Objetivo da v0.2.0
 
-A v0.1.0 estabeleceu o fluxo funcional de Markdown até DOCX. A v0.2.0 está em desenvolvimento e adiciona configuração documental sem quebrar o uso básico da versão anterior.
+A v0.2.0 amplia a fundação da CLI com configuração e apresentação documental:
 
 ```text
 Markdown
@@ -17,25 +17,28 @@ Validação
    ↓
 Parser estrutural
    ↓
-Configuração YAML (opcional)
+Configuração YAML
    ↓
 Exportador DOCX
    ↓
-Documento gerado
+Documento estilizado
 ```
 
 ### Suporte atual
 
 - títulos Markdown (`#` a `######`);
 - parágrafos;
-- listas não ordenadas e ordenadas;
-- blocos de código cercados por ```;
+- listas não ordenadas;
+- listas ordenadas;
+- tabelas Markdown no formato com linha separadora;
+- blocos de código cercados por ```, com identificação opcional da linguagem;
 - validação de arquivo de entrada;
+- saída `.docx` configurável;
+- metadados DOCX;
+- estilos de corpo, títulos e código;
+- cabeçalho e rodapé;
+- configuração opcional via YAML;
 - CLI `docflow export`;
-- configuração YAML opcional;
-- metadados DOCX (`title`, `author`, `subject`, `keywords`);
-- fonte e tamanho do corpo configuráveis;
-- fonte de títulos e de código configurável;
 - testes automatizados.
 
 ## Instalação local
@@ -50,24 +53,73 @@ pip install -e .[dev]
 
 ## Uso
 
-Compatível com a v0.1.0:
+Sem configuração:
 
 ```bash
 docflow export examples/sample.md -o output/sample.docx
 ```
 
-Com configuração:
+Com configuração YAML:
 
 ```bash
 docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
 ```
 
-Consulte `examples/docflow.yaml` para um exemplo de metadados e estilos.
+Ou:
+
+```bash
+python -m docflow.cli export examples/sample.md -o output/sample.docx
+```
+
+## Configuração YAML
+
+Exemplo:
+
+```yaml
+document:
+  title: Documento DocFlow
+  author: Lucas da Silva Santos
+  header: DocFlow Portfolio
+  footer: v0.2.0
+
+styles:
+  body:
+    font: Arial
+    size: 11
+  heading:
+    font: Arial
+  code:
+    font: Courier New
+    size: 9
+```
+
+Todos os campos são opcionais. Sem arquivo YAML, o DocFlow utiliza valores padrão e preserva o fluxo simples da v0.1.0.
 
 ## Testes
 
 ```bash
 pytest
+```
+
+## Estrutura
+
+```text
+docflow/
+├── README.md
+├── LICENSE
+├── CHANGELOG.md
+├── ROADMAP.md
+├── AGENTS.md
+├── pyproject.toml
+├── src/
+│   └── docflow/
+│       ├── cli.py
+│       ├── config.py
+│       ├── parser.py
+│       └── exporters/
+│           └── docx.py
+├── tests/
+└── examples/
 ```
 
 ## Segurança e origem
@@ -76,7 +128,7 @@ O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não 
 
 ## Roadmap
 
-A v0.2.0 continuará com tabelas Markdown, melhor tratamento de código e cabeçalho/rodapé.
+A evolução prevista inclui templates DOCX, presets, sumário, PDF, HTML e pipeline de publicação.
 
 Consulte [`ROADMAP.md`](ROADMAP.md).
 

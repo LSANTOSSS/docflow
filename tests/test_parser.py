@@ -28,7 +28,26 @@ print('ok')
         "code",
     ]
     assert blocks[0].level == 1
+    assert blocks[-1].language == "python"
     assert "print('ok')" in blocks[-1].text
+
+
+def test_parse_markdown_table():
+    blocks = parse_markdown(
+        """| Nome | Status |
+| --- | --- |
+| DocFlow | Ativo |
+| SAF | Ativo |
+"""
+    )
+
+    assert len(blocks) == 1
+    assert blocks[0].kind == "table"
+    assert blocks[0].rows == (
+        ("Nome", "Status"),
+        ("DocFlow", "Ativo"),
+        ("SAF", "Ativo"),
+    )
 
 
 def test_validate_rejects_empty_markdown(tmp_path: Path):

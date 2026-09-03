@@ -1,6 +1,6 @@
 # Documento de Exemplo
 
-Este documento demonstra a primeira versão pública do DocFlow.
+Este documento demonstra a versão pública do DocFlow.
 
 ## Objetivos
 
@@ -9,14 +9,22 @@ Este documento demonstra a primeira versão pública do DocFlow.
 - exportar para DOCX;
 - manter o processo reproduzível.
 
-## Fluxo
+## Recursos da v0.2.0
 
-1. escrever o documento;
-2. executar a CLI;
-3. receber o DOCX.
+| Recurso | Estado |
+| --- | --- |
+| Estilos YAML | Suportado |
+| Tabelas | Suportado |
+| Cabeçalho e rodapé | Suportado |
+
+## Exemplo de código
+
+```python
+print("DocFlow v0.2.0")
+```
 
 ## Exemplo de comando
 
 ```bash
-docflow export examples/sample.md -o output/sample.docx
+docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
 ```

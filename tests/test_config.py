@@ -14,6 +14,8 @@ def test_load_config_merges_defaults(tmp_path: Path):
     assert config["styles"]["body"]["size"] == 12
     assert config["styles"]["body"]["font"] == "Arial"
     assert config["styles"]["code"]["font"] == "Courier New"
+    assert config["document"]["header"] is None
+    assert config["document"]["footer"] is None
 
 
 def test_load_config_rejects_non_mapping_yaml(tmp_path: Path):

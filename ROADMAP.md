@@ -13,9 +13,9 @@
 
 - [x] estilos configuráveis;
 - [x] metadados do documento;
-- [ ] tabelas Markdown;
-- [ ] melhor tratamento de código;
-- [ ] cabeçalho e rodapé;
+- [x] tabelas Markdown;
+- [x] melhor tratamento de código;
+- [x] cabeçalho e rodapé;
 - [x] configuração por arquivo YAML.
 
 ## v0.3.0 — Templates

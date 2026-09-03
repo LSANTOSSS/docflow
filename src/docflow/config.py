@@ -12,6 +12,8 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "author": None,
         "subject": None,
         "keywords": None,
+        "header": None,
+        "footer": None,
     },
     "styles": {
         "body": {"font": "Arial", "size": 11},

@@ -17,30 +17,34 @@ def test_export_creates_docx(tmp_path: Path):
     assert output.stat().st_size > 0
 
 
-def test_export_uses_yaml_metadata_and_styles(tmp_path: Path):
+def test_export_supports_table_code_header_and_footer(tmp_path: Path):
     source = tmp_path / "sample.md"
-    config = tmp_path / "docflow.yaml"
     output = tmp_path / "sample.docx"
-    source.write_text("# Documento\n\nConteúdo.\n", encoding="utf-8")
-    config.write_text(
-        """document:
-  title: Documento configurado
-  author: Autor de teste
-styles:
-  body:
-    font: Aptos
-    size: 12
-  heading:
-    font: Aptos Display
+    config = tmp_path / "docflow.yaml"
+    source.write_text(
+        """# Documento
+
+| Campo | Valor |
+| --- | --- |
+| versão | 0.2.0 |
+
+```python
+print("docflow")
+```
 """,
+        encoding="utf-8",
+    )
+    config.write_text(
+        "document:\n  header: DocFlow Portfolio\n  footer: v0.2.0\n",
         encoding="utf-8",
     )
 
     run_export(source, output, config)
-    document = Document(output)
 
-    assert document.core_properties.title == "Documento configurado"
-    assert document.core_properties.author == "Autor de teste"
-    assert document.styles["Normal"].font.name == "Aptos"
-    assert document.styles["Normal"].font.size.pt == 12
-    assert document.styles["Heading 1"].font.name == "Aptos Display"
+    document = Document(output)
+    assert len(document.tables) == 1
+    assert document.tables[0].cell(1, 1).text == "0.2.0"
+    assert document.sections[0].header.paragraphs[0].text == "DocFlow Portfolio"
+    assert document.sections[0].footer.paragraphs[0].text == "v0.2.0"
+    assert "python" in "\n".join(p.text for p in document.paragraphs)
+    assert 'print("docflow")' in "\n".join(p.text for p in document.paragraphs)

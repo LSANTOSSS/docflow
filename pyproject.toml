@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docflow-portfolio"
-version = "0.2.0.dev1"
+version = "0.2.0"
 description = "Clean-room Markdown document automation CLI for a public portfolio"
 readme = "README.md"
 requires-python = ">=3.11"
