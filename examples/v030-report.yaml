@@ -1,0 +1,11 @@
+template:
+  preset: report
+
+document:
+  title: Relatório DocFlow
+  author: Lucas da Silva Santos
+
+structure:
+  required_headings:
+    - Resumo
+    - Conclusão

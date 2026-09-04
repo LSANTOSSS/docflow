@@ -6,38 +6,87 @@ O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos
 
 Este projeto complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF): enquanto o SAF demonstra análise e Engenharia de Requisitos, o DocFlow demonstra **automação, desenvolvimento, testes e tooling**.
 
-## Objetivo da v0.2.0
+## v0.3.0 — em desenvolvimento
 
-A v0.2.0 amplia a fundação da CLI com configuração e apresentação documental:
+A v0.3.0 introduz a camada de templates e estrutura documental sem quebrar o fluxo simples das versões anteriores.
 
-```text
-Markdown
-   ↓
-Validação
-   ↓
-Parser estrutural
-   ↓
-Configuração YAML
-   ↓
-Exportador DOCX
-   ↓
-Documento estilizado
+Na primeira rodada desta versão, o DocFlow passa a oferecer:
+
+- presets públicos de documento (`report` e `specification`);
+- validação de seções obrigatórias;
+- suporte a um arquivo DOCX-base informado por configuração;
+- resolução de caminhos de template relativa ao arquivo YAML;
+- possibilidade de sobrescrever valores herdados de um preset;
+- compatibilidade com exportação sem configuração.
+
+O template DOCX de referência versionado e o sumário ficam para a segunda rodada da v0.3.0.
+
+## Uso básico
+
+```bash
+docflow export examples/sample.md -o output/sample.docx
 ```
 
-### Suporte atual
+## Configuração com preset
+
+```yaml
+template:
+  preset: report
+
+document:
+  title: Relatório de Exemplo
+
+styles:
+  body:
+    size: 12
+```
+
+O preset `report` exige uma seção `Resumo`. O preset `specification` exige as seções `Objetivo` e `Requisitos`.
+
+## Configuração com DOCX-base
+
+```yaml
+template:
+  path: reference.docx
+```
+
+Caminhos relativos são resolvidos a partir do diretório do arquivo YAML. O arquivo informado deve existir e usar a extensão `.docx`.
+
+Também é possível combinar preset e template:
+
+```yaml
+template:
+  preset: specification
+  path: reference.docx
+```
+
+## Validação estrutural
+
+A configuração também aceita regras explícitas:
+
+```yaml
+structure:
+  required_headings:
+    - Resumo
+    - Conclusão
+```
+
+Os títulos são comparados sem diferenciar maiúsculas de minúsculas. Se uma seção obrigatória estiver ausente, a exportação é interrompida com uma mensagem clara.
+
+## Suporte acumulado
 
 - títulos Markdown (`#` a `######`);
 - parágrafos;
-- listas não ordenadas;
-- listas ordenadas;
-- tabelas Markdown no formato com linha separadora;
-- blocos de código cercados por ```, com identificação opcional da linguagem;
-- validação de arquivo de entrada;
-- saída `.docx` configurável;
+- listas ordenadas e não ordenadas;
+- tabelas Markdown;
+- blocos de código com linguagem opcional;
 - metadados DOCX;
-- estilos de corpo, títulos e código;
+- estilos configuráveis;
 - cabeçalho e rodapé;
-- configuração opcional via YAML;
+- configuração YAML;
+- presets;
+- validação estrutural;
+- DOCX-base configurável;
 - CLI `docflow export`;
 - testes automatizados.
 
@@ -51,75 +100,10 @@ source .venv/bin/activate
 pip install -e .[dev]
 ```
 
-## Uso
-
-Sem configuração:
-
-```bash
-docflow export examples/sample.md -o output/sample.docx
-```
-
-Com configuração YAML:
-
-```bash
-docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
-```
-
-Ou:
-
-```bash
-python -m docflow.cli export examples/sample.md -o output/sample.docx
-```
-
-## Configuração YAML
-
-Exemplo:
-
-```yaml
-document:
-  title: Documento DocFlow
-  author: Lucas da Silva Santos
-  header: DocFlow Portfolio
-  footer: v0.2.0
-
-styles:
-  body:
-    font: Arial
-    size: 11
-  heading:
-    font: Arial
-  code:
-    font: Courier New
-    size: 9
-```
-
-Todos os campos são opcionais. Sem arquivo YAML, o DocFlow utiliza valores padrão e preserva o fluxo simples da v0.1.0.
-
 ## Testes
 
 ```bash
 pytest
-```
-
-## Estrutura
-
-```text
-docflow/
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── ROADMAP.md
-├── AGENTS.md
-├── pyproject.toml
-├── src/
-│   └── docflow/
-│       ├── cli.py
-│       ├── config.py
-│       ├── parser.py
-│       └── exporters/
-│           └── docx.py
-├── tests/
-└── examples/
 ```
 
 ## Segurança e origem
@@ -127,8 +111,6 @@ docflow/
 O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não copia código, templates, caminhos, configurações ou artefatos de ambientes corporativos.
 
 ## Roadmap
-
-A evolução prevista inclui templates DOCX, presets, sumário, PDF, HTML e pipeline de publicação.
 
 Consulte [`ROADMAP.md`](ROADMAP.md).
 
