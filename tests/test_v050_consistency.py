@@ -2,6 +2,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 from docx import Document
+from docx.table import Table
+from docx.text.paragraph import Paragraph
 from pypdf import PdfReader
 
 from docflow.cli import run_export
@@ -19,10 +21,14 @@ class TextCollector(HTMLParser):
 
 def _docx_text(path: Path) -> str:
     document = Document(path)
-    parts = [paragraph.text for paragraph in document.paragraphs if paragraph.text]
-    for table in document.tables:
-        for row in table.rows:
-            parts.extend(cell.text for cell in row.cells if cell.text)
+    parts: list[str] = []
+    for item in document.iter_inner_content():
+        if isinstance(item, Paragraph):
+            if item.text:
+                parts.append(item.text)
+        elif isinstance(item, Table):
+            for row in item.rows:
+                parts.extend(cell.text for cell in row.cells if cell.text)
     return "\n".join(parts)
 
 
