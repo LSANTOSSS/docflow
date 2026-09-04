@@ -25,14 +25,21 @@ def _pdf_font(name: str | None, fallback: str) -> str:
     return _FONT_MAP.get(str(name), fallback)
 
 
+def _heading_size(base_size: float, level: int) -> float:
+    return max(base_size - (level - 1) * 1.3, 12.0)
+
+
 def _styles(config: dict[str, Any]):
     styles_cfg = config.get("styles", {})
     body_cfg = styles_cfg.get("body", {})
+    heading_cfg = styles_cfg.get("heading", {})
     code_cfg = styles_cfg.get("code", {})
     sample = getSampleStyleSheet()
 
     body_font = _pdf_font(body_cfg.get("font"), "Helvetica")
     body_size = float(body_cfg.get("size") or 11)
+    heading_font = _pdf_font(heading_cfg.get("font"), body_font)
+    heading_base_size = float(heading_cfg.get("size") or 18)
     code_font = _pdf_font(code_cfg.get("font"), "Courier")
     code_size = float(code_cfg.get("size") or 9)
 
@@ -44,18 +51,18 @@ def _styles(config: dict[str, Any]):
         leading=body_size * 1.4,
         spaceAfter=4,
     )
-    headings = {
-        level: ParagraphStyle(
+    headings = {}
+    for level in range(1, 7):
+        level_size = _heading_size(heading_base_size, level)
+        headings[level] = ParagraphStyle(
             f"DocFlowHeading{level}",
             parent=sample["Heading1"],
-            fontName=body_font,
-            fontSize=max(body_size + 8 - (level - 1) * 1.3, body_size + 1),
-            leading=max(body_size + 8 - (level - 1) * 1.3, body_size + 1) * 1.2,
+            fontName=heading_font,
+            fontSize=level_size,
+            leading=level_size * 1.2,
             spaceBefore=8,
             spaceAfter=4,
         )
-        for level in range(1, 7)
-    }
     code = ParagraphStyle(
         "DocFlowCode",
         parent=sample["Code"],

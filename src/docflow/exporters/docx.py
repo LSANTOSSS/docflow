@@ -7,6 +7,10 @@ from docx.shared import Pt
 from docflow.parser import Block
 
 
+def _heading_size(base_size: float, level: int) -> float:
+    return max(base_size - (level - 1) * 1.3, 12.0)
+
+
 def _apply_document_config(document: Document, config: dict[str, Any]) -> None:
     metadata = config["document"]
     properties = document.core_properties
@@ -17,11 +21,15 @@ def _apply_document_config(document: Document, config: dict[str, Any]) -> None:
 
     styles = config["styles"]
     body = styles["body"]
+    heading = styles["heading"]
     normal = document.styles["Normal"]
     normal.font.name = body["font"]
     normal.font.size = Pt(float(body["size"]))
+    heading_base_size = float(heading.get("size") or 18)
     for level in range(1, 7):
-        document.styles[f"Heading {level}"].font.name = styles["heading"]["font"]
+        heading_style = document.styles[f"Heading {level}"]
+        heading_style.font.name = heading["font"]
+        heading_style.font.size = Pt(_heading_size(heading_base_size, level))
 
     for section in document.sections:
         if metadata.get("header"):

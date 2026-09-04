@@ -7,6 +7,8 @@ from docx.text.paragraph import Paragraph
 from pypdf import PdfReader
 
 from docflow.cli import run_export
+from docflow.config import load_config
+from docflow.exporters.pdf import _styles
 
 
 class TextCollector(HTMLParser):
@@ -140,3 +142,45 @@ def test_docx_uses_numbered_list_style_for_ordered_items(tmp_path: Path):
     ordered = [paragraph for paragraph in document.paragraphs if paragraph.text]
     assert [paragraph.text for paragraph in ordered] == ["First item", "Second item"]
     assert all(paragraph.style.name == "List Number" for paragraph in ordered)
+
+
+def test_typography_configuration_is_shared_across_exporters(tmp_path: Path):
+    source = tmp_path / "typography.md"
+    config_path = tmp_path / "docflow.yaml"
+    source.write_text("# Title\n\n## Section\n\nText.\n\n```python\nprint('x')\n```\n", encoding="utf-8")
+    config_path.write_text(
+        "styles:\n"
+        "  body:\n    font: Times New Roman\n    size: 12\n"
+        "  heading:\n    font: Times New Roman\n    size: 20\n"
+        "  code:\n    font: Courier New\n    size: 10\n",
+        encoding="utf-8",
+    )
+
+    docx_output = tmp_path / "typography.docx"
+    html_output = tmp_path / "typography.html"
+    pdf_output = tmp_path / "typography.pdf"
+    for output in (docx_output, html_output, pdf_output):
+        run_export(source, output, config_path)
+
+    document = Document(docx_output)
+    assert document.styles["Normal"].font.name == "Times New Roman"
+    assert document.styles["Normal"].font.size.pt == 12
+    assert document.styles["Heading 1"].font.name == "Times New Roman"
+    assert document.styles["Heading 1"].font.size.pt == 20
+    assert round(document.styles["Heading 2"].font.size.pt, 1) == 18.7
+
+    html = html_output.read_text(encoding="utf-8")
+    assert "font-family: Times New Roman, sans-serif; font-size: 12pt" in html
+    assert "h1 { font-family: Times New Roman, sans-serif; font-size: 20pt" in html
+    assert "h2 { font-family: Times New Roman, sans-serif; font-size: 18.7pt" in html
+    assert "font-family: Courier New, monospace; font-size: 10pt" in html
+
+    config = load_config(config_path)
+    body, headings, code, _ = _styles(config)
+    assert body.fontName == "Times-Roman"
+    assert body.fontSize == 12
+    assert headings[1].fontName == "Times-Roman"
+    assert headings[1].fontSize == 20
+    assert round(headings[2].fontSize, 1) == 18.7
+    assert code.fontName == "Courier"
+    assert code.fontSize == 10

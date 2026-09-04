@@ -16,7 +16,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     },
     "styles": {
         "body": {"font": "Arial", "size": 11},
-        "heading": {"font": "Arial"},
+        "heading": {"font": "Arial", "size": 18},
         "code": {"font": "Courier New", "size": 9},
     },
     "template": {"path": None, "preset": None},
