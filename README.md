@@ -1,14 +1,21 @@
 # DocFlow
 
-**Document automation from Markdown, built as a clean-room portfolio project.**
+**Markdown document automation with validation and multi-format delivery.**
 
-O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos de entrega configuráveis, validáveis e reproduzíveis.
+[![CI](https://github.com/LSANTOSSS/docflow/actions/workflows/ci.yml/badge.svg)](https://github.com/LSANTOSSS/docflow/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/LSANTOSSS/docflow)](https://github.com/LSANTOSSS/docflow/releases/latest)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-informational)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-informational)](LICENSE)
 
-Este projeto complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF): enquanto o SAF demonstra análise e Engenharia de Requisitos, o DocFlow demonstra **automação, desenvolvimento, testes e tooling**.
+O **DocFlow** é uma CLI em Python que transforma uma única fonte Markdown em documentos **DOCX, HTML e PDF**, aplicando configuração, presets e validação estrutural antes da geração dos artefatos.
 
-## v0.4.0 — Multi-format
+Foi desenvolvido como projeto público e clean-room de portfólio para demonstrar **Python, automação documental, desenho de CLI, parsing, validação, testes e CI/CD**.
 
-A v0.4.0 fecha o primeiro ciclo multi-format do projeto. A mesma fonte Markdown pode ser validada e exportada para **DOCX, HTML ou PDF**.
+> **Release atual:** [v0.4.0 — Multi-format](https://github.com/LSANTOSSS/docflow/releases/tag/v0.4.0)
+
+## O problema
+
+Documentos mantidos manualmente em vários formatos tendem a divergir, exigir trabalho repetitivo e dificultar a validação antes da entrega. O DocFlow trata o Markdown como fonte e cria um fluxo reproduzível entre conteúdo, validação e publicação.
 
 ```text
 Markdown
@@ -25,80 +32,84 @@ Exportador
    └── PDF
 ```
 
-## Instalação local
+## O que a v0.4.0 entrega
+
+- exportação DOCX, HTML e PDF;
+- configuração documental via YAML;
+- presets `report` e `specification`;
+- suporte a DOCX-base configurável;
+- validação de títulos obrigatórios;
+- comando `docflow validate`;
+- relatório de validação em JSON;
+- sumário DOCX opcional;
+- cabeçalho, rodapé, metadados e estilos configuráveis;
+- tabelas, listas e blocos de código;
+- testes automatizados;
+- GitHub Actions com geração de artefatos de demonstração.
+
+## Quick start
 
 Requer Python 3.11+.
 
 ```bash
+git clone https://github.com/LSANTOSSS/docflow.git
+cd docflow
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev]
 ```
 
-## Exportação
-
-DOCX:
+Gere os três formatos a partir do mesmo Markdown:
 
 ```bash
 docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
-```
-
-HTML:
-
-```bash
 docflow export examples/sample.md -o output/sample.html -c examples/docflow.yaml
-```
-
-PDF:
-
-```bash
 docflow export examples/sample.md -o output/sample.pdf -c examples/docflow.yaml
 ```
 
-A exportação PDF é gerada diretamente em Python com ReportLab. O exportador cobre títulos, parágrafos, listas, tabelas, blocos de código e metadados básicos, além de cabeçalho e rodapé quando configurados.
-
-## Validação e relatório
-
-```bash
-docflow validate examples/sample.md -c examples/docflow.yaml
-```
-
-Para persistir o resultado em JSON:
+Valide a estrutura e gere um relatório JSON:
 
 ```bash
 docflow validate examples/sample.md -c examples/docflow.yaml --report output/validation.json
 ```
 
-O relatório registra validade estrutural, títulos encontrados, seções obrigatórias ausentes e contagem dos blocos reconhecidos pelo parser.
+## Configuração
 
-## Pipeline
+O arquivo YAML permite combinar metadados, estilos, presets e regras estruturais sem acoplar essas decisões ao conteúdo Markdown. Também é possível fornecer um DOCX-base próprio para controlar a identidade visual do documento gerado.
 
-O workflow em `.github/workflows/ci.yml` executa a suíte de testes e gera automaticamente quatro artefatos de demonstração:
+A exportação PDF é feita diretamente em Python com ReportLab. O exportador cobre títulos, parágrafos, listas, tabelas, blocos de código e metadados básicos, além de cabeçalho e rodapé quando configurados.
+
+## Qualidade e pipeline
+
+O workflow `.github/workflows/ci.yml` executa a suíte de testes e valida o fluxo público de demonstração. A pipeline gera automaticamente:
 
 - `sample.docx`;
 - `sample.html`;
 - `sample.pdf`;
 - `validation.json`.
 
-Isso mantém o exemplo público verificável e demonstra o pipeline multi-format sem depender de ambiente corporativo.
+A release v0.4.0 foi validada com sucesso pelo GitHub Actions antes da publicação formal.
 
-## Recursos disponíveis
+## Evolução do projeto
 
-- títulos Markdown (`#` a `######`);
-- parágrafos e listas;
-- tabelas Markdown;
-- blocos de código com linguagem opcional;
-- metadados e estilos configuráveis;
-- cabeçalho e rodapé;
-- configuração YAML;
-- DOCX-base configurável;
-- presets `report` e `specification`;
-- validação de títulos obrigatórios;
-- sumário DOCX opcional;
-- exportação DOCX, HTML e PDF;
-- relatório JSON de validação;
-- CI com geração de artefatos;
-- testes automatizados.
+| Versão | Marco |
+| --- | --- |
+| v0.1 | Foundation — CLI, parser, DOCX e testes |
+| v0.2 | Document Styling — YAML, estilos, tabelas, código, header/footer |
+| v0.3 | Templates — presets, DOCX-base, validação estrutural e sumário |
+| v0.4 | Multi-format — HTML, PDF, relatório JSON e pipeline CI |
+
+Consulte [`ROADMAP.md`](ROADMAP.md) e [`CHANGELOG.md`](CHANGELOG.md) para o histórico completo.
+
+## Relação com o SAF
+
+O DocFlow complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF). O SAF apresenta o lado de **análise e Engenharia de Requisitos** do portfólio; o DocFlow demonstra a transformação desse perfil em **automação, desenvolvimento, testes e tooling**.
+
+Os projetos são independentes e públicos, mas juntos mostram um fluxo que vai da estruturação do problema à automação de entregáveis.
+
+## Segurança e origem
+
+O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não copia código, templates, caminhos, configurações, credenciais ou artefatos de ambientes corporativos.
 
 ## Testes
 
@@ -106,16 +117,6 @@ Isso mantém o exemplo público verificável e demonstra o pipeline multi-format
 pytest
 ```
 
-## Segurança e origem
-
-O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não copia código, templates, caminhos, configurações ou artefatos de ambientes corporativos.
-
-## Roadmap
-
-A v0.4.0 conclui o roadmap funcional inicial. Próximas evoluções podem aprofundar fidelidade visual entre formatos, distribuição empacotada, templates adicionais e novas validações.
-
-Consulte [`ROADMAP.md`](ROADMAP.md).
-
 ## Licença
 
-MIT.
+MIT — consulte [`LICENSE`](LICENSE).
