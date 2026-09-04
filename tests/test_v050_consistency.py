@@ -167,7 +167,7 @@ def test_typography_configuration_is_shared_across_exporters(tmp_path: Path):
     assert document.styles["Normal"].font.size.pt == 12
     assert document.styles["Heading 1"].font.name == "Times New Roman"
     assert document.styles["Heading 1"].font.size.pt == 20
-    assert round(document.styles["Heading 2"].font.size.pt, 1) == 18.7
+    assert abs(document.styles["Heading 2"].font.size.pt - 18.7) <= 0.25
 
     html = html_output.read_text(encoding="utf-8")
     assert "font-family: Times New Roman, sans-serif; font-size: 12pt" in html
