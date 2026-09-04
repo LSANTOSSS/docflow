@@ -33,14 +33,21 @@ def export_html(blocks: list[Block], output: Path, config: dict[str, Any]) -> Pa
     size = float(body_style.get("size") or 11)
 
     parts: list[str] = []
-    for block in blocks:
+    index = 0
+    while index < len(blocks):
+        block = blocks[index]
+        if block.kind in {"unordered_list", "ordered_list"}:
+            kind = block.kind
+            tag = "ul" if kind == "unordered_list" else "ol"
+            items: list[str] = []
+            while index < len(blocks) and blocks[index].kind == kind:
+                items.append(f"<li>{_escape(blocks[index].text)}</li>")
+                index += 1
+            parts.append(f"<{tag}>{''.join(items)}</{tag}>")
+            continue
         if block.kind == "heading":
             level = min(max(block.level or 1, 1), 6)
             parts.append(f"<h{level}>{_escape(block.text)}</h{level}>")
-        elif block.kind == "unordered_list":
-            parts.append(f"<ul><li>{_escape(block.text)}</li></ul>")
-        elif block.kind == "ordered_list":
-            parts.append(f"<ol><li>{_escape(block.text)}</li></ol>")
         elif block.kind == "code":
             language = f' class="language-{_escape(block.language)}"' if block.language else ""
             parts.append(f"<pre><code{language}>{_escape(block.text)}</code></pre>")
@@ -48,6 +55,7 @@ def export_html(blocks: list[Block], output: Path, config: dict[str, Any]) -> Pa
             parts.append(_table_html(block))
         else:
             parts.append(f"<p>{_escape(block.text)}</p>")
+        index += 1
 
     author_meta = f'<meta name="author" content="{_escape(author)}">' if author else ""
     content = f"""<!doctype html>

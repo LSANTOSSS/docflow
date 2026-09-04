@@ -89,15 +89,20 @@ def export_pdf(blocks: list[Block], output: Path, config: dict[str, Any]) -> Pat
     metadata = config.get("document", {})
     body, headings, code, body_font = _styles(config)
     story = []
+    ordered_index = 0
 
     for block in blocks:
+        if block.kind == "ordered_list":
+            ordered_index += 1
+            story.append(Paragraph(f"{ordered_index}. {escape(block.text)}", body))
+            continue
+
+        ordered_index = 0
         if block.kind == "heading":
             level = min(max(block.level or 1, 1), 6)
             story.append(Paragraph(escape(block.text), headings[level]))
         elif block.kind == "unordered_list":
             story.append(Paragraph(f"• {escape(block.text)}", body))
-        elif block.kind == "ordered_list":
-            story.append(Paragraph(f"1. {escape(block.text)}", body))
         elif block.kind == "code":
             prefix = f"{block.language}\n" if block.language else ""
             story.append(Preformatted(escape(prefix + block.text), code))
