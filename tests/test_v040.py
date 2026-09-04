@@ -33,6 +33,38 @@ print("docflow")
     assert 'class="language-python"' in content
 
 
+def test_export_pdf(tmp_path: Path):
+    source = tmp_path / "sample.md"
+    output = tmp_path / "sample.pdf"
+    config = tmp_path / "docflow.yaml"
+    source.write_text(
+        """# Documento
+
+Texto de teste.
+
+| Campo | Valor |
+| --- | --- |
+| versão | 0.4.0 |
+
+```python
+print("docflow")
+```
+""",
+        encoding="utf-8",
+    )
+    config.write_text(
+        "document:\n  title: PDF público\n  author: Lucas da Silva Santos\n  header: DocFlow\n  footer: v0.4.0\n",
+        encoding="utf-8",
+    )
+
+    generated = run_export(source, output, config)
+
+    assert generated == output
+    assert output.exists()
+    assert output.stat().st_size > 1000
+    assert output.read_bytes().startswith(b"%PDF")
+
+
 def test_validation_report_is_written(tmp_path: Path):
     source = tmp_path / "report.md"
     config = tmp_path / "docflow.yaml"

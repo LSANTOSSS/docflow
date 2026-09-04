@@ -4,10 +4,11 @@ from pathlib import Path
 from docflow.config import load_config
 from docflow.exporters.docx import export_docx
 from docflow.exporters.html import export_html
+from docflow.exporters.pdf import export_pdf
 from docflow.parser import parse_markdown, validate_markdown
 from docflow.validation import build_validation_report, validate_structure
 
-SUPPORTED_OUTPUTS = {".docx", ".html"}
+SUPPORTED_OUTPUTS = {".docx", ".html", ".pdf"}
 
 
 def build_parser():
@@ -36,12 +37,14 @@ def _load_document(source: Path, config_path: Path | None):
 def run_export(source: Path, output: Path, config_path: Path | None = None) -> Path:
     suffix = output.suffix.lower()
     if suffix not in SUPPORTED_OUTPUTS:
-        raise ValueError("A saída suportada é .docx ou .html.")
+        raise ValueError("A saída suportada é .docx, .html ou .pdf.")
     config, blocks = _load_document(source, config_path)
     validate_structure(blocks, config)
     if suffix == ".docx":
         return export_docx(blocks, output, config=config)
-    return export_html(blocks, output, config=config)
+    if suffix == ".html":
+        return export_html(blocks, output, config=config)
+    return export_pdf(blocks, output, config=config)
 
 
 def run_validation(source: Path, config_path: Path | None = None, report_path: Path | None = None) -> dict:

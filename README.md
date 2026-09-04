@@ -2,17 +2,13 @@
 
 **Document automation from Markdown, built as a clean-room portfolio project.**
 
-O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos de entrega configuráveis e reproduzíveis.
+O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos de entrega configuráveis, validáveis e reproduzíveis.
 
 Este projeto complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF): enquanto o SAF demonstra análise e Engenharia de Requisitos, o DocFlow demonstra **automação, desenvolvimento, testes e tooling**.
 
-## Versão estável
+## v0.4.0 — Multi-format
 
-A versão estável atual é a **v0.3.0 — Templates**, com DOCX configurável, presets, validação estrutural e sumário opcional.
-
-A **v0.4.0 — Multi-format** está em desenvolvimento. A primeira rodada adiciona exportação HTML e relatório de validação, preservando a exportação DOCX existente.
-
-## Fluxo
+A v0.4.0 fecha o primeiro ciclo multi-format do projeto. A mesma fonte Markdown pode ser validada e exportada para **DOCX, HTML ou PDF**.
 
 ```text
 Markdown
@@ -25,7 +21,8 @@ Configuração / Preset
    ↓
 Exportador
    ├── DOCX
-   └── HTML
+   ├── HTML
+   └── PDF
 ```
 
 ## Instalação local
@@ -52,9 +49,15 @@ HTML:
 docflow export examples/sample.md -o output/sample.html -c examples/docflow.yaml
 ```
 
-## Validação e relatório
+PDF:
 
-A v0.4.0 introduz um comando dedicado de validação:
+```bash
+docflow export examples/sample.md -o output/sample.pdf -c examples/docflow.yaml
+```
+
+A exportação PDF é gerada diretamente em Python com ReportLab. O exportador cobre títulos, parágrafos, listas, tabelas, blocos de código e metadados básicos, além de cabeçalho e rodapé quando configurados.
+
+## Validação e relatório
 
 ```bash
 docflow validate examples/sample.md -c examples/docflow.yaml
@@ -66,7 +69,18 @@ Para persistir o resultado em JSON:
 docflow validate examples/sample.md -c examples/docflow.yaml --report output/validation.json
 ```
 
-O relatório registra se o documento é válido, títulos encontrados, títulos obrigatórios ausentes e contagem dos blocos estruturais reconhecidos pelo parser.
+O relatório registra validade estrutural, títulos encontrados, seções obrigatórias ausentes e contagem dos blocos reconhecidos pelo parser.
+
+## Pipeline
+
+O workflow em `.github/workflows/ci.yml` executa a suíte de testes e gera automaticamente quatro artefatos de demonstração:
+
+- `sample.docx`;
+- `sample.html`;
+- `sample.pdf`;
+- `validation.json`.
+
+Isso mantém o exemplo público verificável e demonstra o pipeline multi-format sem depender de ambiente corporativo.
 
 ## Recursos disponíveis
 
@@ -74,14 +88,16 @@ O relatório registra se o documento é válido, títulos encontrados, títulos 
 - parágrafos e listas;
 - tabelas Markdown;
 - blocos de código com linguagem opcional;
-- metadados, estilos, cabeçalho e rodapé no DOCX;
+- metadados e estilos configuráveis;
+- cabeçalho e rodapé;
 - configuração YAML;
 - DOCX-base configurável;
 - presets `report` e `specification`;
 - validação de títulos obrigatórios;
 - sumário DOCX opcional;
-- exportação DOCX e HTML;
+- exportação DOCX, HTML e PDF;
 - relatório JSON de validação;
+- CI com geração de artefatos;
 - testes automatizados.
 
 ## Testes
@@ -96,7 +112,7 @@ O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não 
 
 ## Roadmap
 
-A próxima rodada da v0.4.0 prevê **PDF + pipeline de publicação + fechamento da versão**.
+A v0.4.0 conclui o roadmap funcional inicial. Próximas evoluções podem aprofundar fidelidade visual entre formatos, distribuição empacotada, templates adicionais e novas validações.
 
 Consulte [`ROADMAP.md`](ROADMAP.md).
 

@@ -1,11 +1,15 @@
 # Changelog
 
-## [Unreleased] — v0.4.0 Multi-format
+## [0.4.0] — Multi-format
 
 - Exportação HTML a partir da mesma estrutura Markdown usada pelo DOCX.
+- Exportação PDF direta em Python com ReportLab.
 - Novo comando `docflow validate`.
 - Relatório JSON opcional com títulos, seções ausentes e contagem de blocos.
-- Testes iniciais da camada multi-format.
+- CLI unificada para `.docx`, `.html` e `.pdf`.
+- Workflow de GitHub Actions com testes e geração de artefatos de exemplo.
+- Exemplo público atualizado e compatível com o preset `report`.
+- Cobertura de testes ampliada para HTML, PDF e validação.
 
 ## [0.3.0] — Templates
 

@@ -27,16 +27,24 @@
 
 ## v0.4.0 — Multi-format
 
-- [ ] PDF;
+- [x] PDF;
 - [x] HTML;
-- [ ] pipeline de publicação;
+- [x] pipeline de publicação;
 - [x] relatório de validação.
 
-### Progresso técnico da v0.4.0
+### Entregas da v0.4.0
 
-- [x] exportador HTML sem dependência adicional;
+- [x] exportação DOCX, HTML e PDF pela mesma CLI;
 - [x] comando `docflow validate`;
 - [x] relatório JSON opcional de validação;
-- [x] cobertura inicial de testes para HTML e relatório;
-- [ ] exportação PDF;
-- [ ] pipeline de publicação e fechamento da versão.
+- [x] geração PDF direta em Python com ReportLab;
+- [x] workflow de CI com testes e geração dos três formatos;
+- [x] artefatos de exemplo publicados pelo pipeline;
+- [x] exemplo público compatível com o preset `report`.
+
+## Próximas evoluções
+
+- [ ] melhorias de fidelidade visual entre formatos;
+- [ ] templates adicionais;
+- [ ] distribuição empacotada;
+- [ ] novos relatórios e validações.
