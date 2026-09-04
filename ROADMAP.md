@@ -25,18 +25,18 @@
 - [x] validação de estrutura;
 - [x] sumário.
 
-### Entregas da v0.3.0
-
-- [x] suporte a DOCX-base configurável;
-- [x] resolução de caminho de template relativo ao YAML;
-- [x] presets `report` e `specification`;
-- [x] validação de títulos obrigatórios;
-- [x] configuração pública de referência para templates;
-- [x] sumário DOCX opcional.
-
 ## v0.4.0 — Multi-format
 
 - [ ] PDF;
-- [ ] HTML;
+- [x] HTML;
 - [ ] pipeline de publicação;
-- [ ] relatório de validação.
+- [x] relatório de validação.
+
+### Progresso técnico da v0.4.0
+
+- [x] exportador HTML sem dependência adicional;
+- [x] comando `docflow validate`;
+- [x] relatório JSON opcional de validação;
+- [x] cobertura inicial de testes para HTML e relatório;
+- [ ] exportação PDF;
+- [ ] pipeline de publicação e fechamento da versão.

@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased] — v0.4.0 Multi-format
+
+- Exportação HTML a partir da mesma estrutura Markdown usada pelo DOCX.
+- Novo comando `docflow validate`.
+- Relatório JSON opcional com títulos, seções ausentes e contagem de blocos.
+- Testes iniciais da camada multi-format.
+
 ## [0.3.0] — Templates
 
 - Suporte a DOCX-base configurável.

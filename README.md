@@ -2,13 +2,17 @@
 
 **Document automation from Markdown, built as a clean-room portfolio project.**
 
-O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos DOCX configuráveis e reproduzíveis.
+O DocFlow é uma CLI em Python para transformar documentos Markdown em artefatos de entrega configuráveis e reproduzíveis.
 
 Este projeto complementa o [SAF — System Analysis Framework](https://github.com/LSANTOSSS/SAF): enquanto o SAF demonstra análise e Engenharia de Requisitos, o DocFlow demonstra **automação, desenvolvimento, testes e tooling**.
 
-## v0.3.0 — Templates
+## Versão estável
 
-A v0.3.0 consolida uma camada de templates sobre a fundação de parsing e estilização das versões anteriores:
+A versão estável atual é a **v0.3.0 — Templates**, com DOCX configurável, presets, validação estrutural e sumário opcional.
+
+A **v0.4.0 — Multi-format** está em desenvolvimento. A primeira rodada adiciona exportação HTML e relatório de validação, preservando a exportação DOCX existente.
+
+## Fluxo
 
 ```text
 Markdown
@@ -17,29 +21,12 @@ Validação estrutural
    ↓
 Parser
    ↓
-Preset + YAML + DOCX-base
+Configuração / Preset
    ↓
-Exportador DOCX
-   ↓
-Sumário opcional
-   ↓
-Documento final
+Exportador
+   ├── DOCX
+   └── HTML
 ```
-
-### Suporte atual
-
-- títulos Markdown (`#` a `######`);
-- parágrafos e listas;
-- tabelas Markdown;
-- blocos de código com linguagem opcional;
-- metadados, estilos, cabeçalho e rodapé;
-- configuração YAML;
-- DOCX-base configurável;
-- presets `report` e `specification`;
-- validação de títulos obrigatórios;
-- sumário DOCX opcional;
-- CLI `docflow export`;
-- testes automatizados.
 
 ## Instalação local
 
@@ -51,76 +38,56 @@ source .venv/bin/activate
 pip install -e .[dev]
 ```
 
-## Uso
+## Exportação
 
-Sem configuração:
-
-```bash
-docflow export examples/sample.md -o output/sample.docx
-```
-
-Com preset e configuração YAML:
+DOCX:
 
 ```bash
 docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
 ```
 
-Exemplo de configuração:
+HTML:
 
-```yaml
-document:
-  title: Documento DocFlow
-  author: Lucas da Silva Santos
-  header: DocFlow Portfolio
-  footer: v0.3.0
-  toc: true
-
-template:
-  preset: report
+```bash
+docflow export examples/sample.md -o output/sample.html -c examples/docflow.yaml
 ```
 
-O preset `report` exige os títulos `Resumo` e `Resultados`. O preset `specification` exige `Objetivo`, `Requisitos` e `Critérios de Aceite`. Valores definidos no YAML podem sobrescrever configurações herdadas do preset.
+## Validação e relatório
 
-Para usar um DOCX-base próprio, informe um caminho relativo ao YAML ou absoluto:
+A v0.4.0 introduz um comando dedicado de validação:
 
-```yaml
-template:
-  path: templates/reference.docx
+```bash
+docflow validate examples/sample.md -c examples/docflow.yaml
 ```
 
-O arquivo precisa existir e usar extensão `.docx`. O DocFlow abre esse documento como base e preserva seus estilos e elementos existentes antes de acrescentar o conteúdo Markdown.
+Para persistir o resultado em JSON:
 
-### Sumário
+```bash
+docflow validate examples/sample.md -c examples/docflow.yaml --report output/validation.json
+```
 
-Com `document.toc: true`, o DocFlow inclui um campo de sumário baseado nos níveis de título 1 a 3. O campo é compatível com processadores DOCX que atualizam campos; quando necessário, abra o documento e atualize o sumário no editor.
+O relatório registra se o documento é válido, títulos encontrados, títulos obrigatórios ausentes e contagem dos blocos estruturais reconhecidos pelo parser.
+
+## Recursos disponíveis
+
+- títulos Markdown (`#` a `######`);
+- parágrafos e listas;
+- tabelas Markdown;
+- blocos de código com linguagem opcional;
+- metadados, estilos, cabeçalho e rodapé no DOCX;
+- configuração YAML;
+- DOCX-base configurável;
+- presets `report` e `specification`;
+- validação de títulos obrigatórios;
+- sumário DOCX opcional;
+- exportação DOCX e HTML;
+- relatório JSON de validação;
+- testes automatizados.
 
 ## Testes
 
 ```bash
 pytest
-```
-
-## Estrutura
-
-```text
-docflow/
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── ROADMAP.md
-├── AGENTS.md
-├── pyproject.toml
-├── src/
-│   └── docflow/
-│       ├── cli.py
-│       ├── config.py
-│       ├── parser.py
-│       ├── presets.py
-│       ├── validation.py
-│       └── exporters/
-│           └── docx.py
-├── tests/
-└── examples/
 ```
 
 ## Segurança e origem
@@ -129,7 +96,7 @@ O DocFlow é desenvolvido de forma independente para o portfólio pessoal. Não 
 
 ## Roadmap
 
-A próxima etapa prevista é a v0.4.0 — Multi-format, com PDF, HTML, pipeline de publicação e relatório de validação.
+A próxima rodada da v0.4.0 prevê **PDF + pipeline de publicação + fechamento da versão**.
 
 Consulte [`ROADMAP.md`](ROADMAP.md).
 
