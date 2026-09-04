@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from docflow.cli import run_export, run_validation
 
 
@@ -75,6 +77,26 @@ def test_validation_report_is_written(tmp_path: Path):
     result = run_validation(source, config, report)
 
     assert result["valid"] is True
+    assert result["summary"] == {"checks": 1, "passed": 1, "failed": 0, "issues": 0}
+    assert result["checks"][0]["status"] == "passed"
+    assert result["issues"] == []
     assert result["block_counts"]["heading"] == 1
     assert report.exists()
     assert '"valid": true' in report.read_text(encoding="utf-8")
+
+
+def test_invalid_validation_report_is_actionable_and_written(tmp_path: Path):
+    source = tmp_path / "report.md"
+    config = tmp_path / "docflow.yaml"
+    report = tmp_path / "validation.json"
+    source.write_text("# Introdução\n\nTexto.\n", encoding="utf-8")
+    config.write_text("template:\n  preset: report\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Resumo"):
+        run_validation(source, config, report)
+
+    content = report.read_text(encoding="utf-8")
+    assert '"valid": false' in content
+    assert '"failed": 1' in content
+    assert '"code": "missing_required_heading"' in content
+    assert '"heading": "Resumo"' in content
