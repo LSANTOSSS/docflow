@@ -89,7 +89,6 @@ print("docflow")
         "Value",
         "status",
         "consistent",
-        "python",
         'print("docflow")',
     ]
 
@@ -98,6 +97,10 @@ print("docflow")
             assert token in text, f"{token!r} ausente em {format_name}"
         positions = [text.index(token) for token in expected]
         assert positions == sorted(positions), f"ordem estrutural divergente em {format_name}"
+
+    assert "python" in extracted["docx"]
+    assert "python" in extracted["pdf"]
+    assert 'class="language-python"' in outputs["html"].read_text(encoding="utf-8")
 
 
 def test_ordered_lists_keep_sequence_in_html_and_pdf(tmp_path: Path):
