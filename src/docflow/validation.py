@@ -16,9 +16,38 @@ def build_validation_report(blocks: list[Block], config: dict[str, Any], source:
     for block in blocks:
         counts[block.kind] = counts.get(block.kind, 0) + 1
 
+    checks = [
+        {
+            "id": "required_headings",
+            "status": "passed" if not missing else "failed",
+            "message": (
+                "Todas as seções obrigatórias estão presentes."
+                if not missing
+                else "Seções obrigatórias ausentes: " + ", ".join(missing) + "."
+            ),
+        }
+    ]
+    issues = [
+        {
+            "code": "missing_required_heading",
+            "severity": "error",
+            "message": f"Seção obrigatória ausente: {heading}.",
+            "heading": heading,
+        }
+        for heading in missing
+    ]
+
     return {
-        "valid": not missing,
+        "valid": not issues,
         "source": str(source) if source else None,
+        "summary": {
+            "checks": len(checks),
+            "passed": sum(check["status"] == "passed" for check in checks),
+            "failed": sum(check["status"] == "failed" for check in checks),
+            "issues": len(issues),
+        },
+        "checks": checks,
+        "issues": issues,
         "required_headings": [str(name) for name in required],
         "headings": headings,
         "missing_headings": missing,
