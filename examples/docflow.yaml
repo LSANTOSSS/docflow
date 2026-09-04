@@ -1,10 +1,12 @@
 document:
   title: Documento DocFlow
   author: Lucas da Silva Santos
-  subject: Exemplo público de automação documental
-  keywords: docflow, markdown, docx
   header: DocFlow Portfolio
-  footer: v0.2.0
+  footer: v0.3.0
+  toc: true
+
+template:
+  preset: report
 
 styles:
   body:

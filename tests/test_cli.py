@@ -48,3 +48,21 @@ print("docflow")
     assert document.sections[0].footer.paragraphs[0].text == "v0.2.0"
     assert "python" in "\n".join(p.text for p in document.paragraphs)
     assert 'print("docflow")' in "\n".join(p.text for p in document.paragraphs)
+
+
+def test_export_adds_toc_field(tmp_path: Path):
+    source = tmp_path / "sample.md"
+    output = tmp_path / "sample.docx"
+    config = tmp_path / "docflow.yaml"
+    source.write_text("# Resumo\n\nTexto.\n\n# Resultados\n\nDados.\n", encoding="utf-8")
+    config.write_text(
+        "document:\n  toc: true\ntemplate:\n  preset: report\n",
+        encoding="utf-8",
+    )
+
+    run_export(source, output, config)
+
+    document = Document(output)
+    xml = document._element.xml
+    assert "TOC" in xml
+    assert '1-3' in xml

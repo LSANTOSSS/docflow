@@ -20,19 +20,19 @@
 
 ## v0.3.0 — Templates
 
-- [ ] template DOCX de referência;
+- [x] template DOCX de referência;
 - [x] presets de documentos;
 - [x] validação de estrutura;
-- [ ] sumário.
+- [x] sumário.
 
-### Progresso técnico da v0.3.0
+### Entregas da v0.3.0
 
 - [x] suporte a DOCX-base configurável;
 - [x] resolução de caminho de template relativo ao YAML;
 - [x] presets `report` e `specification`;
 - [x] validação de títulos obrigatórios;
-- [ ] template público de referência versionado;
-- [ ] sumário e fechamento da versão.
+- [x] configuração pública de referência para templates;
+- [x] sumário DOCX opcional.
 
 ## v0.4.0 — Multi-format
 

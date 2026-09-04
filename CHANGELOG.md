@@ -1,15 +1,14 @@
 # Changelog
 
-## [0.3.0] — Em desenvolvimento
+## [0.3.0] — Templates
 
-### Rodada 1 — Templates e estrutura
-
-- Arquitetura de templates DOCX via configuração.
+- Suporte a DOCX-base configurável.
 - Presets públicos `report` e `specification`.
-- Validação de seções obrigatórias antes da exportação.
-- Resolução de caminho relativo para template DOCX.
-- Sobrescrita de valores herdados de preset.
-- Testes para templates, presets, validação e compatibilidade.
+- Validação estrutural por títulos obrigatórios.
+- Caminho de template relativo ao arquivo YAML.
+- Sumário DOCX opcional via campo `document.toc`.
+- Exemplo público de configuração para v0.3.0.
+- Cobertura de testes ampliada para templates e sumário.
 
 ## [0.2.0] — Document Styling
 
