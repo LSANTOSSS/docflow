@@ -20,7 +20,12 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "code": {"font": "Courier New", "size": 9},
     },
     "template": {"path": None, "preset": None},
-    "structure": {"required_headings": []},
+    "structure": {
+        "required_headings": [],
+        "unique_headings": False,
+        "single_h1": False,
+        "no_heading_level_skips": False,
+    },
 }
 
 
@@ -59,6 +64,9 @@ def load_config(path: Path | None = None):
     template = data.get("template") or {}
     if not isinstance(template, dict):
         raise ValueError("A seção template da configuração deve ser um objeto.")
+    structure = data.get("structure") or {}
+    if not isinstance(structure, dict):
+        raise ValueError("A seção structure da configuração deve ser um objeto.")
 
     config = deepcopy(DEFAULT_CONFIG)
     preset = template.get("preset")

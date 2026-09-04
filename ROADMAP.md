@@ -50,7 +50,7 @@ O roadmap organiza a evolução do DocFlow até a primeira versão estável da C
 
 - [ ] melhorar a fidelidade visual entre DOCX, HTML e PDF;
 - [x] definir um conjunto comum de estruturas que devem manter comportamento equivalente entre exportadores;
-- [ ] ampliar as validações estruturais;
+- [x] ampliar as validações estruturais;
 - [x] enriquecer o relatório JSON com resultados acionáveis;
 - [x] adicionar testes de regressão para os três formatos;
 - [x] documentar diferenças intencionais entre exportadores.

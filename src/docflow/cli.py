@@ -6,7 +6,7 @@ from docflow.exporters.docx import export_docx
 from docflow.exporters.html import export_html
 from docflow.exporters.pdf import export_pdf
 from docflow.parser import parse_markdown, validate_markdown
-from docflow.validation import build_validation_report, validate_structure
+from docflow.validation import build_validation_report, validate_structure, validation_error_message
 
 SUPPORTED_OUTPUTS = {".docx", ".html", ".pdf"}
 
@@ -55,7 +55,7 @@ def run_validation(source: Path, config_path: Path | None = None, report_path: P
         import json
         report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if not report["valid"]:
-        raise ValueError("Seções obrigatórias ausentes: " + ", ".join(report["missing_headings"]) + ".")
+        raise ValueError(validation_error_message(report))
     return report
 
 
