@@ -12,8 +12,17 @@ def _rule_enabled(structure: dict[str, Any], name: str) -> bool:
 
 
 def _validation_error(report: dict[str, Any]) -> str:
-    messages = [str(issue["message"]) for issue in report.get("issues", []) if issue.get("severity") == "error"]
-    return "Validação estrutural falhou: " + " ".join(messages)
+    parts: list[str] = []
+    missing = report.get("missing_headings") or []
+    if missing:
+        parts.append("Seções obrigatórias ausentes: " + ", ".join(str(name) for name in missing) + ".")
+
+    parts.extend(
+        str(issue["message"])
+        for issue in report.get("issues", [])
+        if issue.get("severity") == "error" and issue.get("code") != "missing_required_heading"
+    )
+    return "Validação estrutural falhou: " + " ".join(parts)
 
 
 def build_validation_report(blocks: list[Block], config: dict[str, Any], source: Path | None = None) -> dict[str, Any]:
