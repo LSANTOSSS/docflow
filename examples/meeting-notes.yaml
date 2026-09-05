@@ -1,0 +1,10 @@
+template:
+  preset: meeting-notes
+
+document:
+  title: Weekly Product Sync
+  author: Example Team
+
+styles:
+  body:
+    size: 11

@@ -63,11 +63,11 @@ A mesma entrada de demonstração deve poder ser validada e exportada para DOCX,
 
 **Objetivo:** ampliar a reutilização do DocFlow sem acoplar conteúdo a um único modelo documental.
 
-- [ ] adicionar novos presets de documentos;
+- [x] adicionar novos presets de documentos;
 - [ ] evoluir a composição e reutilização de configurações;
-- [ ] ampliar exemplos públicos de templates;
-- [ ] validar requisitos estruturais específicos por preset;
-- [ ] documentar criação e customização de templates.
+- [x] ampliar exemplos públicos de templates;
+- [x] validar requisitos estruturais específicos por preset;
+- [x] documentar criação e customização de templates.
 
 ### Critério de saída
 

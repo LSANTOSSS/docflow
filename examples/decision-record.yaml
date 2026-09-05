@@ -1,0 +1,10 @@
+template:
+  preset: decision-record
+
+document:
+  title: Decision Record Example
+  author: Example Team
+
+styles:
+  heading:
+    size: 19
