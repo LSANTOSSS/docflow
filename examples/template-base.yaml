@@ -1,0 +1,12 @@
+template:
+  preset: report
+
+document:
+  author: Example Team
+  footer: DocFlow public example
+
+styles:
+  body:
+    font: Times New Roman
+  heading:
+    font: Times New Roman
