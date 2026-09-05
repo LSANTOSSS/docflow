@@ -11,7 +11,7 @@ O **DocFlow** é uma CLI em Python que transforma uma única fonte Markdown em d
 
 Foi desenvolvido como projeto público e clean-room de portfólio para demonstrar **Python, automação documental, desenho de CLI, parsing, validação, testes e CI/CD**.
 
-> **Release atual:** [v0.4.0 — Multi-format](https://github.com/LSANTOSSS/docflow/releases/tag/v0.4.0)
+> **Versão preparada:** v0.5.0 — Quality & Validation
 
 ## O problema
 
@@ -32,19 +32,21 @@ Exportador
    └── PDF
 ```
 
-## O que a v0.4.0 entrega
+## O que a v0.5.0 entrega
 
-- exportação DOCX, HTML e PDF;
+- exportação DOCX, HTML e PDF pela mesma CLI;
 - configuração documental via YAML;
 - presets `report` e `specification`;
 - suporte a DOCX-base configurável;
-- validação de títulos obrigatórios;
+- validação estrutural ampliada;
 - comando `docflow validate`;
-- relatório de validação em JSON;
+- relatório JSON com resultados acionáveis;
+- consistência estrutural e tipográfica entre exportadores;
+- diferenças intencionais entre DOCX, HTML e PDF documentadas;
 - sumário DOCX opcional;
 - cabeçalho, rodapé, metadados e estilos configuráveis;
 - tabelas, listas e blocos de código;
-- testes automatizados;
+- testes de regressão multi-formato;
 - GitHub Actions com geração de artefatos de demonstração.
 
 ## Quick start
@@ -77,6 +79,8 @@ docflow validate examples/sample.md -c examples/docflow.yaml --report output/val
 
 O arquivo YAML permite combinar metadados, estilos, presets e regras estruturais sem acoplar essas decisões ao conteúdo Markdown. Também é possível fornecer um DOCX-base próprio para controlar a identidade visual do documento gerado.
 
+Na v0.5.0, corpo, títulos e blocos de código passam a seguir uma configuração tipográfica compartilhada pelos exportadores. A equivalência é intencionalmente estrutural e visual dentro das capacidades de cada formato: Word, navegador e ReportLab possuem mecanismos de renderização próprios.
+
 A exportação PDF é feita diretamente em Python com ReportLab. O exportador cobre títulos, parágrafos, listas, tabelas, blocos de código e metadados básicos, além de cabeçalho e rodapé quando configurados.
 
 ## Qualidade e pipeline
@@ -88,7 +92,7 @@ O workflow `.github/workflows/ci.yml` executa a suíte de testes e valida o flux
 - `sample.pdf`;
 - `validation.json`.
 
-A release v0.4.0 foi validada com sucesso pelo GitHub Actions antes da publicação formal.
+A v0.5.0 consolida testes de regressão para os três exportadores e mantém documentadas as diferenças que não podem ou não devem ser reproduzidas de forma idêntica entre os formatos.
 
 ## Evolução do projeto
 
@@ -98,6 +102,8 @@ A release v0.4.0 foi validada com sucesso pelo GitHub Actions antes da publicaç
 | v0.2 | Document Styling — YAML, estilos, tabelas, código, header/footer |
 | v0.3 | Templates — presets, DOCX-base, validação estrutural e sumário |
 | v0.4 | Multi-format — HTML, PDF, relatório JSON e pipeline CI |
+| v0.5 | Quality & Validation — consistência multi-formato, validações e regressão |
+| v0.6 | Template Library — próxima evolução planejada |
 
 Consulte [`ROADMAP.md`](ROADMAP.md) e [`CHANGELOG.md`](CHANGELOG.md) para o histórico completo.
 
