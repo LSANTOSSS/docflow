@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0] — Quality & Validation
+
+- Fidelidade visual aprimorada entre DOCX, HTML e PDF.
+- Conjunto comum de estruturas com comportamento equivalente entre exportadores.
+- Validações estruturais ampliadas.
+- Relatório JSON enriquecido com resultados acionáveis.
+- Testes de regressão cobrindo os três formatos.
+- Diferenças intencionais entre exportadores documentadas.
+- Configuração tipográfica compartilhada para corpo, títulos e blocos de código.
+- Escala previsível de títulos H1–H6, respeitando as limitações próprias de cada formato.
+- Suíte consolidada com 25 testes automatizados.
+
 ## [0.4.0] — Multi-format
 
 - Exportação HTML a partir da mesma estrutura Markdown usada pelo DOCX.
