@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
 
+from docflow import __version__
 from docflow.config import load_config
 from docflow.exporters.docx import export_docx
 from docflow.exporters.html import export_html
@@ -13,17 +14,18 @@ SUPPORTED_OUTPUTS = {".docx", ".html", ".pdf"}
 
 def build_parser():
     parser = argparse.ArgumentParser(prog="docflow", description="Automação documental a partir de Markdown.")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     subs = parser.add_subparsers(dest="command", required=True)
 
     export = subs.add_parser("export", help="Exporta um documento Markdown.")
-    export.add_argument("source", type=Path)
-    export.add_argument("-o", "--output", type=Path, required=True)
-    export.add_argument("-c", "--config", type=Path)
+    export.add_argument("source", type=Path, help="Arquivo Markdown de origem.")
+    export.add_argument("-o", "--output", type=Path, required=True, help="Destino .docx, .html ou .pdf.")
+    export.add_argument("-c", "--config", type=Path, help="Arquivo YAML opcional de configuração.")
 
     validate = subs.add_parser("validate", help="Valida um documento Markdown e gera relatório opcional.")
-    validate.add_argument("source", type=Path)
-    validate.add_argument("-c", "--config", type=Path)
-    validate.add_argument("--report", type=Path)
+    validate.add_argument("source", type=Path, help="Arquivo Markdown de origem.")
+    validate.add_argument("-c", "--config", type=Path, help="Arquivo YAML opcional de configuração.")
+    validate.add_argument("--report", type=Path, help="Destino opcional do relatório JSON.")
     return parser
 
 
@@ -37,7 +39,7 @@ def _load_document(source: Path, config_path: Path | None):
 def run_export(source: Path, output: Path, config_path: Path | None = None) -> Path:
     suffix = output.suffix.lower()
     if suffix not in SUPPORTED_OUTPUTS:
-        raise ValueError("A saída suportada é .docx, .html ou .pdf.")
+        raise ValueError("Formato de saída não suportado. Use .docx, .html ou .pdf.")
     config, blocks = _load_document(source, config_path)
     validate_structure(blocks, config)
     if suffix == ".docx":

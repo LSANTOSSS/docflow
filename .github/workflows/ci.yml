@@ -25,6 +25,9 @@ jobs:
       - name: Test
         run: pytest
 
+      - name: Verify stable CLI version
+        run: docflow --version
+
       - name: Build example artifacts
         run: |
           mkdir -p output
@@ -44,13 +47,16 @@ jobs:
           python -m venv /tmp/docflow-wheel-venv
           /tmp/docflow-wheel-venv/bin/python -m pip install --upgrade pip
           /tmp/docflow-wheel-venv/bin/python -m pip install dist/*.whl
+          /tmp/docflow-wheel-venv/bin/docflow --version
           /tmp/docflow-wheel-venv/bin/docflow --help
           /tmp/docflow-wheel-venv/bin/docflow validate examples/sample.md -c examples/docflow.yaml
+          mkdir -p /tmp/docflow-wheel-output
+          /tmp/docflow-wheel-venv/bin/docflow export examples/sample.md -o /tmp/docflow-wheel-output/sample.html -c examples/docflow.yaml
 
       - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: docflow-example-artifacts
+          name: docflow-v1.0.0-example-artifacts
           path: |
             output/sample.docx
             output/sample.html
@@ -60,5 +66,5 @@ jobs:
       - name: Upload distribution artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: docflow-distribution
+          name: docflow-v1.0.0-distribution
           path: dist/*

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docflow-portfolio"
-version = "0.5.0"
+version = "1.0.0"
 description = "Clean-room Markdown document automation CLI for a public portfolio"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -14,7 +14,7 @@ authors = [
 ]
 keywords = ["markdown", "document-automation", "cli", "docx", "html", "pdf"]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
@@ -33,6 +33,7 @@ dependencies = [
 Homepage = "https://github.com/LSANTOSSS/docflow"
 Repository = "https://github.com/LSANTOSSS/docflow"
 Issues = "https://github.com/LSANTOSSS/docflow/issues"
+Changelog = "https://github.com/LSANTOSSS/docflow/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [

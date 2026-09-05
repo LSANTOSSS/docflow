@@ -1,17 +1,17 @@
 # DocFlow
 
-**Markdown document automation with validation and multi-format delivery.**
+**Markdown document automation with validation, templates and multi-format delivery.**
 
 [![CI](https://github.com/LSANTOSSS/docflow/actions/workflows/ci.yml/badge.svg)](https://github.com/LSANTOSSS/docflow/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/LSANTOSSS/docflow)](https://github.com/LSANTOSSS/docflow/releases/latest)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-informational)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-informational)](LICENSE)
 
-O **DocFlow** é uma CLI em Python que transforma uma única fonte Markdown em documentos **DOCX, HTML e PDF**, aplicando configuração, presets e validação estrutural antes da geração dos artefatos.
+O **DocFlow** é uma CLI em Python que transforma uma única fonte Markdown em documentos **DOCX, HTML e PDF**, aplicando configuração, presets, composição de YAML e validação estrutural antes da geração dos artefatos.
 
-Foi desenvolvido como projeto público e clean-room de portfólio para demonstrar **Python, automação documental, desenho de CLI, parsing, validação, testes e CI/CD**.
+Foi desenvolvido como projeto público e clean-room de portfólio para demonstrar **Python, automação documental, desenho de CLI, parsing, validação, testes, empacotamento e CI/CD**.
 
-> **Versão preparada:** v0.5.0 — Quality & Validation
+> **Stable CLI:** v1.0.0
 
 ## O problema
 
@@ -24,7 +24,7 @@ Validação estrutural
    ↓
 Parser
    ↓
-Configuração / Preset
+Configuração / Preset / extends
    ↓
 Exportador
    ├── DOCX
@@ -32,24 +32,24 @@ Exportador
    └── PDF
 ```
 
-## O que a v0.5.0 entrega
+## O que a v1.0.0 entrega
 
-- exportação DOCX, HTML e PDF pela mesma CLI;
+- CLI estável com `docflow validate` e `docflow export`;
+- `docflow --version`;
+- exportação DOCX, HTML e PDF pela mesma fonte Markdown;
 - configuração documental via YAML;
-- presets `report` e `specification`;
+- presets `report`, `specification`, `meeting-notes` e `decision-record`;
+- composição de configurações com `extends`;
 - suporte a DOCX-base configurável;
-- validação estrutural ampliada;
-- comando `docflow validate`;
+- validações estruturais opcionais e específicas por preset;
 - relatório JSON com resultados acionáveis;
 - consistência estrutural e tipográfica entre exportadores;
-- diferenças intencionais entre DOCX, HTML e PDF documentadas;
-- sumário DOCX opcional;
-- cabeçalho, rodapé, metadados e estilos configuráveis;
-- tabelas, listas e blocos de código;
-- testes de regressão multi-formato;
-- GitHub Actions com geração de artefatos de demonstração.
+- cabeçalho, rodapé, metadados, estilos, tabelas, listas e blocos de código;
+- testes de regressão multi-formato e fluxo E2E `validate → export`;
+- build de wheel/sdist, `twine check` e instalação limpa do wheel no CI;
+- política de compatibilidade para a linha 1.x.
 
-## Quick start
+## Instalação para desenvolvimento
 
 Requer Python 3.11+.
 
@@ -61,12 +61,14 @@ source .venv/bin/activate
 pip install -e .[dev]
 ```
 
-Gere os três formatos a partir do mesmo Markdown:
+Consulte [`docs/distribution.md`](docs/distribution.md) para build e instalação do pacote gerado.
+
+## Uso
+
+Confira a versão:
 
 ```bash
-docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
-docflow export examples/sample.md -o output/sample.html -c examples/docflow.yaml
-docflow export examples/sample.md -o output/sample.pdf -c examples/docflow.yaml
+docflow --version
 ```
 
 Valide a estrutura e gere um relatório JSON:
@@ -75,24 +77,37 @@ Valide a estrutura e gere um relatório JSON:
 docflow validate examples/sample.md -c examples/docflow.yaml --report output/validation.json
 ```
 
-## Configuração
+Gere os três formatos a partir do mesmo Markdown:
 
-O arquivo YAML permite combinar metadados, estilos, presets e regras estruturais sem acoplar essas decisões ao conteúdo Markdown. Também é possível fornecer um DOCX-base próprio para controlar a identidade visual do documento gerado.
+```bash
+docflow export examples/sample.md -o output/sample.docx -c examples/docflow.yaml
+docflow export examples/sample.md -o output/sample.html -c examples/docflow.yaml
+docflow export examples/sample.md -o output/sample.pdf -c examples/docflow.yaml
+```
 
-Na v0.5.0, corpo, títulos e blocos de código passam a seguir uma configuração tipográfica compartilhada pelos exportadores. A equivalência é intencionalmente estrutural e visual dentro das capacidades de cada formato: Word, navegador e ReportLab possuem mecanismos de renderização próprios.
+## Templates e configuração
 
-A exportação PDF é feita diretamente em Python com ReportLab. O exportador cobre títulos, parágrafos, listas, tabelas, blocos de código e metadados básicos, além de cabeçalho e rodapé quando configurados.
+O YAML permite combinar metadados, estilos, presets e regras estruturais sem acoplar essas decisões ao conteúdo. A v0.6 adicionou uma biblioteca pública de templates e composição com `extends`, permitindo reutilizar bases de configuração e manter overrides locais.
 
-## Qualidade e pipeline
+Consulte [`docs/templates.md`](docs/templates.md) para presets, customização e herança de configurações. As diferenças intencionais entre os exportadores estão em [`docs/format-consistency.md`](docs/format-consistency.md), e as regras de validação em [`docs/validation.md`](docs/validation.md).
 
-O workflow `.github/workflows/ci.yml` executa a suíte de testes e valida o fluxo público de demonstração. A pipeline gera automaticamente:
+## Qualidade e distribuição
+
+O workflow `.github/workflows/ci.yml` executa testes, o fluxo público de demonstração, build de distribuição e validação de instalação limpa. A pipeline gera:
 
 - `sample.docx`;
 - `sample.html`;
 - `sample.pdf`;
-- `validation.json`.
+- `validation.json`;
+- wheel e source distribution em `dist/`.
 
-A v0.5.0 consolida testes de regressão para os três exportadores e mantém documentadas as diferenças que não podem ou não devem ser reproduzidas de forma idêntica entre os formatos.
+O wheel produzido pelo próprio CI é instalado em um ambiente virtual separado e a CLI instalada é executada antes de o build ser considerado válido.
+
+## Compatibilidade 1.x
+
+A interface pública estável inclui os comandos `validate` e `export`, suas opções documentadas, os formatos DOCX/HTML/PDF, os presets publicados, `extends` e os campos já expostos no relatório JSON. Mudanças incompatíveis ficam reservadas para uma nova versão major.
+
+Consulte [`docs/compatibility.md`](docs/compatibility.md).
 
 ## Evolução do projeto
 
@@ -103,7 +118,9 @@ A v0.5.0 consolida testes de regressão para os três exportadores e mantém doc
 | v0.3 | Templates — presets, DOCX-base, validação estrutural e sumário |
 | v0.4 | Multi-format — HTML, PDF, relatório JSON e pipeline CI |
 | v0.5 | Quality & Validation — consistência multi-formato, validações e regressão |
-| v0.6 | Template Library — próxima evolução planejada |
+| v0.6 | Template Library — novos presets e composição de configurações |
+| v0.7 | Distribution — build, wheel, metadados e instalação limpa |
+| v1.0 | Stable CLI — interface pública, E2E e política de compatibilidade |
 
 Consulte [`ROADMAP.md`](ROADMAP.md) e [`CHANGELOG.md`](CHANGELOG.md) para o histórico completo.
 

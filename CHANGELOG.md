@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.0.0] — Stable CLI
+
+- Interface pública da CLI consolidada em `docflow validate` e `docflow export`.
+- Novo `docflow --version`.
+- Mensagens e ajuda da CLI revisadas para os formatos e opções suportados.
+- Fluxo end-to-end `validate → export` coberto para DOCX, HTML e PDF.
+- README, roadmap e documentação revisados para o estado estável.
+- Política de compatibilidade da linha 1.x documentada.
+- Versão do pacote e `__version__` consolidadas em 1.0.0.
+- Pipeline de distribuição preserva build, `twine check` e instalação limpa do wheel antes de aceitar o artefato.
+
+## [0.7.0] — Distribution
+
+- Metadados de empacotamento Python revisados.
+- Build reproduzível de wheel e source distribution com `python -m build`.
+- Validação de metadados com `twine check`.
+- Instalação do wheel em ambiente virtual limpo no CI.
+- Execução da CLI instalada a partir do artefato produzido.
+- Artefatos de distribuição publicados pelo GitHub Actions.
+- Guia público de instalação, atualização e build em `docs/distribution.md`.
+
+## [0.6.0] — Template Library
+
+- Novos presets públicos `meeting-notes` e `decision-record`.
+- Requisitos estruturais específicos por preset.
+- Exemplos públicos para os novos modelos.
+- Composição e reutilização de configurações YAML com `extends`.
+- Herança simples e múltipla com precedência determinística.
+- Resolução de caminhos relativos pelo arquivo que os declara e proteção contra ciclos.
+- Guia de criação e customização em `docs/templates.md`.
+
 ## [0.5.0] — Quality & Validation
 
 - Fidelidade visual aprimorada entre DOCX, HTML e PDF.
@@ -10,7 +41,6 @@
 - Diferenças intencionais entre exportadores documentadas.
 - Configuração tipográfica compartilhada para corpo, títulos e blocos de código.
 - Escala previsível de títulos H1–H6, respeitando as limitações próprias de cada formato.
-- Suíte consolidada com 25 testes automatizados.
 
 ## [0.4.0] — Multi-format
 
