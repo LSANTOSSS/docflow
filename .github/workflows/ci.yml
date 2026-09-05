@@ -19,7 +19,7 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install
+      - name: Install development dependencies
         run: pip install -e .[dev]
 
       - name: Test
@@ -33,12 +33,32 @@ jobs:
           docflow export examples/sample.md -o output/sample.html -c examples/docflow.yaml
           docflow export examples/sample.md -o output/sample.pdf -c examples/docflow.yaml
 
-      - name: Upload artifacts
+      - name: Build distribution package
+        run: python -m build
+
+      - name: Check distribution metadata
+        run: python -m twine check dist/*
+
+      - name: Validate clean wheel installation
+        run: |
+          python -m venv /tmp/docflow-wheel-venv
+          /tmp/docflow-wheel-venv/bin/python -m pip install --upgrade pip
+          /tmp/docflow-wheel-venv/bin/python -m pip install dist/*.whl
+          /tmp/docflow-wheel-venv/bin/docflow --help
+          /tmp/docflow-wheel-venv/bin/docflow validate examples/sample.md -c examples/docflow.yaml
+
+      - name: Upload example artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: docflow-v0.4.0-example
+          name: docflow-example-artifacts
           path: |
             output/sample.docx
             output/sample.html
             output/sample.pdf
             output/validation.json
+
+      - name: Upload distribution artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docflow-distribution
+          path: dist/*

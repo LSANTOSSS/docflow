@@ -77,11 +77,11 @@ O usuário deve conseguir selecionar ou adaptar modelos para diferentes tipos de
 
 **Objetivo:** tornar a instalação e o consumo da CLI mais próximos de uma ferramenta distribuível.
 
-- [ ] revisar metadados e estrutura de empacotamento Python;
-- [ ] validar instalação em ambiente limpo;
-- [ ] definir fluxo de build do pacote;
-- [ ] automatizar verificações de distribuição no CI;
-- [ ] documentar instalação, atualização e execução da CLI.
+- [x] revisar metadados e estrutura de empacotamento Python;
+- [x] validar instalação em ambiente limpo;
+- [x] definir fluxo de build do pacote;
+- [x] automatizar verificações de distribuição no CI;
+- [x] documentar instalação, atualização e execução da CLI.
 
 ### Critério de saída
 
